@@ -8,7 +8,7 @@ Quick Start
 --------
 1. Clone this repo, `git clone git://github.com/e-eq-mc2/pi.js.git`, or `git clone http://github.com/e-eq-mc2/pi.js.git`.
 2. Put the cloned repo in your Web server.
-3. Open lod.js/index.html on **WebGL-enabled browser**.
+3. Open pi.js/index.html on **WebGL-enabled browser**.
 
 Authours
 --------
