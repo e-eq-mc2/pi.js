@@ -6,8 +6,8 @@
 
 $(function() {
 //function webGLStart() {
-	var ENABLE_GL_DEBUG = true;
-	//var ENABLE_GL_DEBUG = false;
+	//var ENABLE_GL_DEBUG = true;
+	var ENABLE_GL_DEBUG = false;
 
 	var canvas = document.getElementById("webGLCanvas");
 	var gl = initWebGL(canvas, ENABLE_GL_DEBUG);
@@ -18,8 +18,8 @@ $(function() {
 	var uniform = new UniformLocation();
 	initMatrix(gl, prgObj, uniform);
 
-  var INC_BODY_COUNT =    2000;
-  var MAX_BODY_COUNT = 5000000;
+  var INC_BODY_COUNT = 1 <<  8;
+  var MAX_BODY_COUNT = 1 << 20;
   var bodySys = new BodySystem(MAX_BODY_COUNT, gl, prgObj);
 
 	var angle = 0.0;
@@ -31,7 +31,6 @@ $(function() {
 			gl.disable(gl.DEPTH_TEST);
 			gl.enable(gl.BLEND);
       gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
-			//gl.clearColor(1.0, 1.0, 1.0, 1.0);
 			gl.clearColor(0.0, 0.0, 0.0, 0.0);
 			gl.clearDepth(1);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -41,16 +40,17 @@ $(function() {
 			var mvpMatrix = mat4.identity(mat4.create());
 
 			angle += 0.01;
-			mat4.translate(mvMatrix, [0.0, 0.0, -4.8 + Math.sin(angle * 0.5)*2.0]);
+			mat4.translate(mvMatrix, [0.0, 0.0, -5.0 + Math.sin(angle * 0.5)*2.0]);
 			mat4.translate(mvMatrix, [0.0, 0.2, 0.0]);
 			mat4.rotateX(mvMatrix, -45.0/ 180 * Math.PI);
 			mat4.rotateZ(mvMatrix, angle);
-			gl.uniformMatrix4fv(uniform.getLocation("pMatrix"), false, pMatrix);
-			gl.uniformMatrix4fv(uniform.getLocation("mvMatrix"), false, mvMatrix);
+      mat4.multiply(pMatrix, mvMatrix, mvpMatrix);
+			gl.uniformMatrix4fv(uniform.getLocation("mvpMatrix"), false, mvpMatrix);
 
       bodySys.render();
 
 		})();
+
 		gl.flush();
 
     bodySys.addBody(INC_BODY_COUNT);
@@ -64,14 +64,11 @@ $(function() {
 	// local function //
 	////////////////////
 	function initMatrix(gl, prgObj, uniform) {
-		uniform.setLocation("pMatrix" , gl, prgObj);
-		uniform.setLocation("mvMatrix", gl, prgObj);
+		uniform.setLocation("mvpMatrix", gl, prgObj);
 
-		var  pMatrix = mat4.identity(mat4.create());
-		var mvMatrix = mat4.identity(mat4.create());
+		var mvpMatrix = mat4.identity(mat4.create());
 
-		gl.uniformMatrix4fv(uniform.getLocation("pMatrix" ), false,  pMatrix);
-		gl.uniformMatrix4fv(uniform.getLocation("mvMatrix"), false, mvMatrix);
+		gl.uniformMatrix4fv(uniform.getLocation("mvpMatrix" ), false,  mvpMatrix);
 	}
 	function printInfo(bodySys) {
 		var bodyCount = $.format.number(bodySys.body.count, '#,###'); //num2str(bodySys.body.count(), 5);

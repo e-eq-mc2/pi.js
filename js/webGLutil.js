@@ -87,6 +87,7 @@ function Attrib(gl, prgObj) {
 
 		gl.bindBuffer(this.target[name], this.buffer[name]);
 		gl.bufferData(this.target[name], data, gl.STATIC_DRAW);
+		//gl.bufferData(this.target[name], data, gl.DYNAMIC_DRAW);
 		gl.bindBuffer(this.target[name], null);
 	};
 	this.linkBuffer = function (name, stride, type) {
@@ -111,6 +112,13 @@ function Attrib(gl, prgObj) {
 		var gl = this.gl;
 		gl.bindBuffer(this.target[name], this.buffer[name]);
 		gl.bufferData(this.target[name], data, gl.STATIC_DRAW);
+		//gl.bufferData(this.target[name], data, gl.DYNAMIC_DRAW);
+		gl.bindBuffer(this.target[name], null);
+	};
+	this.subData = function (name, offset, data) {
+		var gl = this.gl;
+		gl.bindBuffer(this.target[name], this.buffer[name]);
+		gl.bufferSubData(this.target[name], offset, data);
 		gl.bindBuffer(this.target[name], null);
 	};
 	this.deleteBuffer = function (name) {

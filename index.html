@@ -10,6 +10,7 @@
 	<script src="js/lib/jquery.format-1.3.js"></script>
 	<script src="js/lib/webgl-debug.js"></script>
 	<script src="js/lib/glMatrix.js"></script>
+	<script src="js/lib/mt.js"></script>
 	<script src="js/webGLutil.js"></script>
 	<script src="js/bodySystem.js"></script>
 	<script src="js/main.js"></script>
@@ -33,24 +34,22 @@ precision mediump float;
 // but it dose not affect operation(*)
 attribute vec3 vertexPosition;
 
-uniform mat4  pMatrix;
-uniform mat4 mvMatrix;
+uniform mat4 mvpMatrix;
 
 varying vec4 v_Color;
 
 void main(void) {
-	// eye coordinate system
-	vec4 vertexEyeSpace = mvMatrix * vec4(vertexPosition, 1.0);
+	// clip coordinate system
+	gl_Position = mvpMatrix * vec4(vertexPosition, 1.0);
+
   float r = length(vertexPosition);
   if ( r <= 1.0 ) {
-    v_Color = vec4(r  , 0.0, 0.0, 0.2);
+    v_Color = vec4(r  , 0.0, 0.0, 0.3);
   } else {
     v_Color = vec4(1.0, 1.0, 1.0, 0.1);
   }
 
-	// clip coordinate system
-	gl_Position = pMatrix * vertexEyeSpace;
-	gl_PointSize = 2.0;
+	gl_PointSize = 1.0;
 }
 	</script>
 	<script id="fs" type="x-shader/x-fragment">
@@ -67,7 +66,7 @@ void main(void) { // each fragment is processed by this function
 <body>
  		<div id="screen" style="position: relative;">
 			<div id="canvasArea">
-				<canvas id="webGLCanvas" style="position: absolute; top: 0px;" width="1024px" height="1024px">
+				<canvas id="webGLCanvas" style="position: absolute; top: 0px;" width="800px" height="800px">
 					Your browser does not support the HTML5 canvas element.
 				</canvas>
 			</div>
