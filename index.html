@@ -1,0 +1,79 @@
+<!DOCTYPE html> 
+<html lang="ja"> 
+<head>
+	<meta charset="UTF-8">
+	<title>pi.js</title>
+	<link rel="stylesheet" href="css/html5reset-1.6.1.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="js/lib/jquery-2.1.0.js"></script>
+	<script src="js/lib/jquery-2.1.0.min.map"></script>
+	<script src="js/lib/jquery.format-1.3.js"></script>
+	<script src="js/lib/webgl-debug.js"></script>
+	<script src="js/lib/glMatrix.js"></script>
+	<script src="js/lib/mt.js"></script>
+	<script src="js/webGLutil.js"></script>
+	<script src="js/bodySystem.js"></script>
+	<script src="js/main.js"></script>
+	<script id="vs" type="x-shader/x-vertex">
+precision mediump float;
+// mat2 m = mat2(1, 2,  3, 4);
+// vec2 v = vec2(10, 20);
+//
+// m * v =
+// | 1, 3 | {1} = { 1*10 + 3*20}
+// | 2, 4 | {2} = { 2*10 + 4*20}
+//
+// mat2 a = mat2( 1,  2,   3,  4);
+// mat2 b = mat2(10, 20,  30, 40);
+//
+// a * b = 
+// | 1, 3 | | 10, 30 |  = | 1*10+3*20, 1*30+3*40 |
+// | 2, 4 | | 20, 40 |  = | 2*10+4*20, 2*30+4*40 |
+//
+// it means a matrix is layed out in column-major format in memory
+// but it dose not affect operation(*)
+attribute vec3 vertexPosition;
+
+uniform mat4 mvpMatrix;
+
+varying vec4 v_Color;
+
+void main(void) {
+	// clip coordinate system
+	gl_Position = mvpMatrix * vec4(vertexPosition, 1.0);
+
+  float r = length(vertexPosition);
+  if ( r <= 1.0 ) {
+    v_Color = vec4(r  , 0.0, 0.0, 0.3);
+  } else {
+    v_Color = vec4(1.0, 1.0, 1.0, 0.1);
+  }
+
+	gl_PointSize = 1.0;
+}
+	</script>
+	<script id="fs" type="x-shader/x-fragment">
+precision mediump float;
+		
+varying vec4 v_Color;
+
+void main(void) { // each fragment is processed by this function
+	gl_FragColor = v_Color;
+}
+	</script>
+</head>
+
+<body>
+ 		<div id="screen" style="position: relative;">
+			<div id="canvasArea">
+				<canvas id="webGLCanvas" style="position: absolute; top: 0px;" width="800px" height="800px">
+					Your browser does not support the HTML5 canvas element.
+				</canvas>
+			</div>
+			<div id="textArea" style="position: absolute; top: 20px;">
+				<h1>Pi Calculation using Monte Carlo Method</h1>
+				<div id="info"></div>
+			</div>
+		</div>
+</body>
+</html>
