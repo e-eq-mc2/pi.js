@@ -2,6 +2,8 @@ pi.js - a WebGL demo
 ========
 This is a **WebGL** demo based on **Pi Calculation of Monte Carlo Method**.
 
+[Demo Page Here!!](http://e-eq-mc2.github.io/pi.js/) (try wth a WebGL-enabled browser)
+
 ![](img/thumbnail.png?raw=true)
 
 Quick Start
