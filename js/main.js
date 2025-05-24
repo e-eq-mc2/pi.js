@@ -18,9 +18,9 @@ $(function() {
 	var uniform = new UniformLocation();
 	initMatrix(gl, prgObj, uniform);
 
-  var INC_BODY_COUNT = 1 <<  8;
-  var MAX_BODY_COUNT = 1 << 20;
-  var bodySys = new BodySystem(MAX_BODY_COUNT, gl, prgObj);
+        var INC_BODY_COUNT = 1 <<  8;
+        var MAX_BODY_COUNT = 1 << 25;
+        var bodySys = new BodySystem(MAX_BODY_COUNT, gl, prgObj);
 
 	var angle = 0.0;
 	(function drawScene() {
@@ -30,7 +30,7 @@ $(function() {
 			//gl.depthFunc(gl.LEQUAL);
 			gl.disable(gl.DEPTH_TEST);
 			gl.enable(gl.BLEND);
-      gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
+                        gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE);
 			gl.clearColor(0.0, 0.0, 0.0, 0.0);
 			gl.clearDepth(1);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -44,16 +44,15 @@ $(function() {
 			mat4.translate(mvMatrix, [0.0, 0.2, 0.0]);
 			mat4.rotateX(mvMatrix, -45.0/ 180 * Math.PI);
 			mat4.rotateZ(mvMatrix, angle);
-      mat4.multiply(pMatrix, mvMatrix, mvpMatrix);
+                        mat4.multiply(pMatrix, mvMatrix, mvpMatrix);
 			gl.uniformMatrix4fv(uniform.getLocation("mvpMatrix"), false, mvpMatrix);
 
-      bodySys.render();
-
+                        bodySys.render();
 		})();
 
 		gl.flush();
 
-    bodySys.addBody(INC_BODY_COUNT);
+                bodySys.addBody(INC_BODY_COUNT);
 
 		printInfo(bodySys);
 

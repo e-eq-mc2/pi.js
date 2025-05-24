@@ -21,7 +21,7 @@ var BodySystem = function(maxBodyCount, gl, prgObj) {
 	  gl.drawArrays(gl.POINTS, 0, this.body.count);
   };
   this.pi = function() {
-    return 4.0 * this.insideCount / this.body.count;
+    return (4.0 * this.insideCount) / this.body.count;
   }
 
   /////////////////////
@@ -41,14 +41,14 @@ var BodySystem = function(maxBodyCount, gl, prgObj) {
         //var x = Math.random() * 2 - 1;
         //var y = Math.random() * 2 - 1;
         //var z = Math.random() * 2 - 1;
-        var x = this.rand_mt.next() * 2 - 1;
-        var y = this.rand_mt.next() * 2 - 1;
-        var z = this.rand_mt.next() * 2 - 1;
+        var x = this.rand_mt.next();
+        var y = this.rand_mt.next();
+        var z = this.rand_mt.next();
 
         var r = x*x + y*y;
-        this.vertices[i * 3 + 0] = x;
-        this.vertices[i * 3 + 1] = y;
-        this.vertices[i * 3 + 2] = z;
+        this.vertices[i * 3 + 0] = x * 2.0 - 1.0;
+        this.vertices[i * 3 + 1] = y * 2.0 - 1.0;
+        this.vertices[i * 3 + 2] = z * 2.0 - 1.0;
         if ( r <= 1.0 ) ++insideCount;
       }
       this.count += addCount;
