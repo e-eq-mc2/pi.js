@@ -31,7 +31,7 @@ var BodySystem = function(maxBodyCount, gl, prgObj) {
     this.count = 0;
     this.maxCount = maxCount;
     this.vertices = new Float32Array(maxCount * 3);
-    this.rand_mt  = new MersenneTwister(123);
+    this.rand_mt  = new MersenneTwister();
 
     this.add = function (addCount) {
       var bgn = this.count;
@@ -49,7 +49,7 @@ var BodySystem = function(maxBodyCount, gl, prgObj) {
         this.vertices[i * 3 + 0] = x * 2.0 - 1.0;
         this.vertices[i * 3 + 1] = y * 2.0 - 1.0;
         this.vertices[i * 3 + 2] = z * 2.0 - 1.0;
-        if ( r <= 1.0 ) ++insideCount;
+        if ( r < 1.0 ) ++insideCount;
       }
       this.count += addCount;
       return insideCount;
