@@ -19,7 +19,7 @@ $(function() {
 	initMatrix(gl, prgObj, uniform);
 
         var INC_BODY_COUNT = 1 <<  8;
-        var MAX_BODY_COUNT = 1 << 25;
+        var MAX_BODY_COUNT = 1 << 20;
         var bodySys = new BodySystem(MAX_BODY_COUNT, gl, prgObj);
 
 	var angle = 0.0;
